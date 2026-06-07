@@ -50,9 +50,8 @@ $$\text{north} \cdot (\text{south} \cdot \text{north})^* \cdot \text{east} \cdot
 ---
 
 ## 🚀 How to Run the App
+This premium iteration leverages native Web APIs (HTML5, CSS3, and JavaScript), eliminating local local python dependencies or package installation bugs.
 
-1. Make sure you have **Python 3.x** installed.
-2. Clone this repository or download the `game.py` file.
-3. Open your terminal/command prompt in the file directory and run:
-   ```bash
-   python game.py
+1. Clone this repository or download the `dfa_game_web.html` file.
+2. Simply **double-click** the `dfa_game_web.html` file to open and run it instantly in any modern web browser (Google Chrome, Safari, Microsoft Edge, or Firefox).
+3. Alternatively, if you are using VS Code, install the **Live Server** extension, open the file, and click **"Go Live"** in the bottom status bar to run it on a local development server.
