@@ -1,6 +1,6 @@
 # 🌸 Escape the Magical Palace (DFA Simulator) 🌸
 
-Welcome to the **Escape the Magical Palace** repository! This is an interactive, graphical text-adventure game built using Python and Tkinter. The entire game loop and movement mechanics are strictly driven by a mathematical **Deterministic Finite Automaton (DFA)**.
+Welcome to the **Escape the Magical Palace** repository! This is an interactive, graphical text-adventure game implemented as a highly polished, single-page progressive web application built natively with HTML5, CSS3 structural grids, and vanilla JavaScript (ES6+). Sound engines are powered via the native browser Web Audio API to guarantee cross-platform compatibility without external dependencies.. The entire game loop and movement mechanics are strictly driven by a mathematical **Deterministic Finite Automaton (DFA)**.
 
 This project was developed as part of a Project-Based Learning (PBL) assignment for the **Theory of Automata and Formal Languages** course.
 
