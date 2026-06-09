@@ -1,885 +1,1122 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌸 Escape the Magical Palace 🌸</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      /* Color Palette */
-      :root {
-        --main-bg: linear-gradient(135deg, #fff0f5 0%, #f0e6fa 100%);
-        --card-bg: #ffffff;
-        --text-dark: #4a2e35;
-        --pink: #ff69b4;
-        --purple: #d8bfd8;
-        --state-bg: #ffe4e1;
-        --win-green: #c1e1c1;
-        --lose-red: #ffb7b2;
-        --gold: #ffd700;
-        --light-purple: #f0e6fa;
-      }
-
-      body {
-        font-family: "Segoe UI", "Trebuchet MS", sans-serif;
-        background: var(--main-bg);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        color: var(--text-dark);
-        overflow-x: hidden;
-      }
-
-      /* ===== HEADER ===== */
-      .header {
-        background: linear-gradient(90deg, var(--pink) 0%, #ff85c0 100%);
-        padding: 20px;
-        text-align: center;
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .header::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 200%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(255, 255, 255, 0.1),
-          transparent
-        );
-        animation: shimmer 3s infinite;
-      }
-
-      @keyframes shimmer {
-        0% {
-          left: -100%;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        100% {
-          left: 100%;
+
+        /* Color Palette - Light Theme */
+        :root {
+            --main-bg: linear-gradient(135deg, #1a0033 0%, #3d0066 25%, #4d1a99 50%, #6b2d99 75%, #9933cc 100%);
+            --card-bg: #FFFFFF;
+            --text-dark: #4A2E35;
+            --text-light: #FFFFFF;
+            --pink: #FF69B4;
+            --purple: #D8BFD8;
+            --state-bg: #FFE4E1;
+            --win-green: #C1E1C1;
+            --lose-red: #FFB7B2;
+            --gold: #FFD700;
+            --light-purple: #F0E6FA;
+            --header-bg: linear-gradient(90deg, #9932CC 0%, #FF1493 50%, #9932CC 100%);
+            --header-border: #FF1493;
+            --card-border: #FFD700;
+            --log-bg: #FAFAFA;
         }
-      }
 
-      .header h1 {
-        font-size: 2.5em;
-        font-weight: 700;
-        letter-spacing: 2px;
-        position: relative;
-        z-index: 1;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-      }
-
-      /* ===== MAIN CONTAINER ===== */
-      .container {
-        display: flex;
-        flex: 1;
-        padding: 30px;
-        gap: 30px;
-        max-width: 1400px;
-        margin: 0 auto;
-        width: 100%;
-      }
-
-      /* ===== LEFT PANEL - GAME AREA ===== */
-      .game-panel {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .room-card {
-        background: var(--card-bg);
-        border: 3px solid var(--purple);
-        border-radius: 15px;
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 8px 25px rgba(216, 191, 216, 0.2);
-        transition: all 0.3s ease;
-        min-height: 280px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .room-card.highlight {
-        animation: pulse-border 0.6s ease-out;
-      }
-
-      @keyframes pulse-border {
-        0% {
-          border-color: var(--pink);
-          transform: scale(1);
+        /* Dark Theme */
+        body.dark-theme {
+            --card-bg: #1a1a2e;
+            --text-dark: #E8E8FF;
+            --text-light: #000000;
+            --state-bg: #2d1b2e;
+            --win-green: #1a4d2e;
+            --lose-red: #4d1a1a;
+            --light-purple: #2d2050;
+            --log-bg: #0f0f1a;
+            --header-bg: linear-gradient(90deg, #6b2d99 0%, #b8228b 50%, #6b2d99 100%);
+            --header-border: #FF1493;
+            --card-border: #d4af37;
         }
-        50% {
-          transform: scale(1.02);
+
+        body.dark-theme {
+            background: linear-gradient(135deg, #0a0015 0%, #1a0033 25%, #2d0052 50%, #3d0066 75%, #5c1a99 100%) !important;
         }
-        100% {
-          border-color: var(--purple);
-          transform: scale(1);
+
+        body {
+            font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+            background: linear-gradient(135deg, #1a0033 0%, #3d0066 25%, #4d1a99 50%, #6b2d99 75%, #9933cc 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            position: relative;
         }
-      }
 
-      .room-emoji {
-        font-size: 4em;
-        margin-bottom: 15px;
-        display: inline-block;
-        animation: float 3s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 105, 180, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(176, 224, 230, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
-        50% {
-          transform: translateY(-15px);
+
+        body::after {
+            content: '👸';
+            position: fixed;
+            bottom: 0;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            font-size: 350px;
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 0;
+            filter: drop-shadow(0 0 30px rgba(255, 105, 180, 0.3));
+            animation: float-princess 6s ease-in-out infinite;
         }
-      }
 
-      .room-title {
-        font-size: 1.8em;
-        font-weight: 700;
-        margin-bottom: 15px;
-        color: var(--pink);
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-      }
-
-      .room-description {
-        font-size: 1.1em;
-        line-height: 1.8;
-        color: var(--text-dark);
-      }
-
-      /* ===== STATE DISPLAY ===== */
-      .state-display {
-        background: linear-gradient(135deg, var(--state-bg), #ffd4e5);
-        border: 2px solid var(--pink);
-        border-radius: 10px;
-        padding: 15px 20px;
-        text-align: center;
-        font-family: "Courier New", monospace;
-        font-weight: bold;
-        font-size: 1.1em;
-        color: var(--text-dark);
-        box-shadow: 0 4px 10px rgba(255, 105, 180, 0.15);
-      }
-
-      /* ===== STATS BAR ===== */
-      .stats-bar {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-      }
-
-      .stat-item {
-        background: var(--light-purple);
-        border: 2px solid var(--purple);
-        border-radius: 10px;
-        padding: 15px;
-        text-align: center;
-        transition: all 0.3s ease;
-      }
-
-      .stat-item.combo-active {
-        background: linear-gradient(135deg, #ffd700, #ffc700);
-        border-color: var(--gold);
-        animation: glow 0.5s ease-out;
-      }
-
-      @keyframes glow {
-        0% {
-          box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+        @keyframes float-princess {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.05); }
         }
-        100% {
-          box-shadow: 0 0 0 15px rgba(255, 215, 0, 0);
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--header-bg);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 
+                0 4px 15px rgba(255, 105, 180, 0.5),
+                0 0 30px rgba(147, 112, 219, 0.3),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--header-border);
         }
-      }
 
-      .stat-label {
-        font-size: 0.9em;
-        color: var(--text-dark);
-        opacity: 0.8;
-        margin-bottom: 5px;
-      }
-
-      .stat-value {
-        font-size: 1.8em;
-        font-weight: bold;
-        color: var(--text-dark);
-      }
-
-      /* ===== CONTROLS ===== */
-      .controls {
-        background: var(--card-bg);
-        border: 3px solid var(--purple);
-        border-radius: 15px;
-        padding: 25px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        gap: 12px;
-        height: 200px;
-        box-shadow: 0 8px 25px rgba(216, 191, 216, 0.2);
-      }
-
-      .btn-direction {
-        background: linear-gradient(135deg, var(--pink), #ff85c0);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 1.1em;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-
-      .btn-direction:hover:not(:disabled) {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 18px rgba(255, 105, 180, 0.4);
-      }
-
-      .btn-direction:active:not(:disabled) {
-        transform: translateY(-1px);
-      }
-
-      .btn-direction:disabled {
-        background: #cccccc;
-        cursor: not-allowed;
-        opacity: 0.5;
-      }
-
-      .btn-north {
-        grid-column: 2;
-        grid-row: 1;
-      }
-      .btn-west {
-        grid-column: 1;
-        grid-row: 2;
-      }
-      .btn-east {
-        grid-column: 3;
-        grid-row: 2;
-      }
-      .btn-south {
-        grid-column: 2;
-        grid-row: 3;
-      }
-
-      /* ===== RESET BUTTON ===== */
-      .btn-reset {
-        background: linear-gradient(135deg, #4a2e35, #6b4f56);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 15px 30px;
-        font-size: 1.1em;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(74, 46, 53, 0.3);
-        display: none;
-        width: 100%;
-      }
-
-      .btn-reset:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(74, 46, 53, 0.4);
-      }
-
-      .btn-reset.show {
-        display: block;
-      }
-
-      /* ===== RESULT BANNER ===== */
-      .result-banner {
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        font-weight: bold;
-        font-size: 1.3em;
-        display: none;
-        animation: slideDown 0.5s ease-out;
-      }
-
-      .result-banner.show {
-        display: block;
-      }
-
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+
+        .header::after {
+            content: '✨ 👑 ✨';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
         }
-      }
 
-      .result-banner.win {
-        background: var(--win-green);
-        color: #1e4620;
-        border: 2px solid #2e7d32;
-      }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
 
-      .result-banner.lose {
-        background: var(--lose-red);
-        color: #721c24;
-        border: 2px solid #c41c3b;
-      }
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+            font-family: Georgia, serif;
+        }
 
-      /* ===== RIGHT PANEL - HISTORY ===== */
-      .history-panel {
-        width: 380px;
-        background: var(--card-bg);
-        border: 3px solid var(--purple);
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 8px 25px rgba(216, 191, 216, 0.2);
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .history-title {
-        font-size: 1.2em;
-        font-weight: 700;
-        color: var(--pink);
-        text-align: center;
-        border-bottom: 2px solid var(--purple);
-        padding-bottom: 10px;
-      }
-
-      .history-log {
-        flex: 1;
-        overflow-y: auto;
-        background: #fafafa;
-        border-radius: 8px;
-        padding: 15px;
-        font-family: "Courier New", monospace;
-        font-size: 0.95em;
-        line-height: 1.6;
-        color: var(--text-dark);
-      }
-
-      .history-log::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      .history-log::-webkit-scrollbar-track {
-        background: #f0e6fa;
-        border-radius: 10px;
-      }
-
-      .history-log::-webkit-scrollbar-thumb {
-        background: var(--purple);
-        border-radius: 10px;
-      }
-
-      .log-entry {
-        margin-bottom: 8px;
-        padding: 5px;
-        border-radius: 4px;
-        transition: background 0.2s ease;
-      }
-
-      .log-entry.correct {
-        background: rgba(193, 225, 193, 0.3);
-        color: #2e7d32;
-      }
-
-      .log-entry.incorrect {
-        background: rgba(255, 183, 178, 0.3);
-        color: #c41c3b;
-      }
-
-      .log-entry.combo {
-        background: rgba(255, 215, 0, 0.2);
-        color: #b8860b;
-        font-weight: bold;
-      }
-
-      .log-header {
-        text-align: center;
-        margin-bottom: 10px;
-        padding: 8px;
-        background: var(--light-purple);
-        border-radius: 4px;
-        font-weight: bold;
-        border: 1px solid var(--purple);
-      }
-
-      .log-separator {
-        text-align: center;
-        opacity: 0.5;
-        margin: 10px 0;
-      }
-
-      /* ===== FOOTER ===== */
-      .footer {
-        background: linear-gradient(90deg, var(--pink) 0%, #ff85c0 100%);
-        color: white;
-        text-align: center;
-        padding: 15px;
-        font-size: 0.95em;
-        box-shadow: 0 -4px 15px rgba(255, 105, 180, 0.2);
-      }
-
-      /* ===== PARTICLES ===== */
-      .particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-      }
-
-      .particle {
-        position: absolute;
-        pointer-events: none;
-      }
-
-      /* ===== RESPONSIVE ===== */
-      @media (max-width: 1200px) {
+        /* ===== MAIN CONTAINER ===== */
         .container {
-          flex-direction: column;
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
+        /* ===== LEFT PANEL - GAME AREA ===== */
+        .game-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .room-card {
+            background: linear-gradient(135deg, var(--card-bg), var(--card-bg));
+            border: 3px solid var(--card-border);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 
+                0 8px 32px rgba(255, 105, 180, 0.3),
+                0 0 20px rgba(255, 215, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            color: var(--text-dark);
+        }
+
+        .room-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            animation: shimmer-card 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer-card {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 20px); }
+        }
+
+        .room-card.highlight {
+            animation: pulse-border 0.6s ease-out;
+        }
+
+        @keyframes pulse-border {
+            0% { border-color: var(--pink); transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { border-color: var(--purple); transform: scale(1); }
+        }
+
+        .room-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .room-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #FF1493, #FF69B4, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+        }
+
+        .room-description {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--text-dark);
+        }
+
+        /* ===== STATE DISPLAY ===== */
+        .state-display {
+            background: linear-gradient(135deg, var(--state-bg), #FFD4E5);
+            border: 2px solid var(--pink);
+            border-radius: 10px;
+            padding: 15px 20px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--text-dark);
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.15);
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: var(--light-purple);
+            border: 2px solid var(--purple);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item.combo-active {
+            background: linear-gradient(135deg, #FFD700, #FFC700);
+            border-color: var(--gold);
+            animation: glow 0.5s ease-out;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            100% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: var(--text-dark);
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            background: var(--card-bg);
+            border: 3px solid var(--purple);
+            border-radius: 15px;
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 12px;
+            height: 200px;
+            box-shadow: 0 8px 25px rgba(216, 191, 216, 0.2);
+        }
+
+        .btn-direction {
+            background: linear-gradient(135deg, #FF1493, #FF69B4, #FFB6C1);
+            color: white;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 4px 12px rgba(255, 105, 180, 0.4),
+                0 0 10px rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-direction:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 6px 18px rgba(255, 105, 180, 0.5),
+                0 0 15px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(135deg, #FF0080, #FF69B4, #FFC0CB);
+        }
+
+        .btn-direction:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+
+        .btn-direction:disabled {
+            background: #CCCCCC;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .btn-north { grid-column: 2; grid-row: 1; }
+        .btn-west { grid-column: 1; grid-row: 2; }
+        .btn-east { grid-column: 3; grid-row: 2; }
+        .btn-south { grid-column: 2; grid-row: 3; }
+
+        /* ===== RESET BUTTON ===== */
+        .btn-reset {
+            background: linear-gradient(135deg, #4A2E35, #6B4F56);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(74, 46, 53, 0.3);
+            display: none;
+            width: 100%;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(74, 46, 53, 0.4);
+        }
+
+        .btn-reset.show {
+            display: block;
+        }
+
+        /* ===== RESULT BANNER ===== */
+        .result-banner {
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            display: none;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .result-banner.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-banner.win {
+            background: var(--win-green);
+            color: #1E4620;
+            border: 2px solid #2E7D32;
+        }
+
+        .result-banner.lose {
+            background: var(--lose-red);
+            color: #721C24;
+            border: 2px solid #C41C3B;
+        }
+
+        /* ===== RIGHT PANEL - HISTORY ===== */
         .history-panel {
-          width: 100%;
+            width: 380px;
+            background: linear-gradient(135deg, var(--card-bg), var(--card-bg));
+            border: 3px solid var(--card-border);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 
+                0 8px 32px rgba(255, 105, 180, 0.3),
+                0 0 20px rgba(255, 215, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            color: var(--text-dark);
         }
-      }
 
-      /* ===== UTILITY ===== */
-      .hidden {
-        display: none !important;
-      }
+        .history-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--pink);
+            text-align: center;
+            border-bottom: 2px solid var(--purple);
+            padding-bottom: 10px;
+        }
 
-      /* Smooth transitions */
-      * {
-        transition:
-          color 0.2s ease,
-          background 0.2s ease;
-      }
+        .history-log {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--log-bg);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .history-log::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .history-log::-webkit-scrollbar-track {
+            background: #F0E6FA;
+            border-radius: 10px;
+        }
+
+        .history-log::-webkit-scrollbar-thumb {
+            background: var(--purple);
+            border-radius: 10px;
+        }
+
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .log-entry.correct {
+            background: rgba(193, 225, 193, 0.3);
+            color: #2E7D32;
+        }
+
+        .log-entry.incorrect {
+            background: rgba(255, 183, 178, 0.3);
+            color: #C41C3B;
+        }
+
+        .log-entry.combo {
+            background: rgba(255, 215, 0, 0.2);
+            color: #B8860B;
+            font-weight: bold;
+        }
+
+        .log-header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: var(--light-purple);
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid var(--purple);
+        }
+
+        .log-separator {
+            text-align: center;
+            opacity: 0.5;
+            margin: 10px 0;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--header-bg);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.95em;
+            box-shadow: 0 -4px 15px rgba(255, 105, 180, 0.3);
+            border-top: 3px solid var(--header-border);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== PARTICLES ===== */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            pointer-events: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .history-panel {
+                width: 100%;
+            }
+        }
+
+        /* ===== MUSIC BUTTON ===== */
+        .btn-music {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF1493, #9932CC);
+            border: 2px solid #FFD700;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+            hover-enabled: true;
+        }
+
+        .btn-music:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
+        }
+
+        .btn-music.muted {
+            opacity: 0.6;
+        }
+
+        /* ===== THEME BUTTON ===== */
+        .btn-theme {
+            position: fixed;
+            bottom: 30px;
+            right: 110px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: 2px solid #FF1493;
+            color: #333;
+            font-size: 1.8em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .btn-theme:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: color 0.2s ease, background 0.2s ease;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div id="particles" class="particles"></div>
 
     <header class="header">
-      <h1>🌸 ESCAPE THE MAGICAL PALACE 🌸</h1>
+        <h1>🌸 ESCAPE THE MAGICAL PALACE 🌸</h1>
     </header>
 
     <div class="container">
-      <!-- LEFT PANEL: Game -->
-      <div class="game-panel">
-        <!-- Room Card -->
-        <div class="room-card" id="roomCard">
-          <div class="room-emoji" id="roomEmoji">🎀</div>
-          <div class="room-title" id="roomTitle">The Dressing Room</div>
-          <div class="room-description" id="roomDescription">
-            Welcome to the game...
-          </div>
+        <!-- LEFT PANEL: Game -->
+        <div class="game-panel">
+            <!-- Room Card -->
+            <div class="room-card" id="roomCard">
+                <div class="room-emoji" id="roomEmoji">🎀</div>
+                <div class="room-title" id="roomTitle">The Dressing Room</div>
+                <div class="room-description" id="roomDescription">Welcome to the game...</div>
+            </div>
+
+            <!-- State Display -->
+            <div class="state-display" id="stateDisplay">
+                State: [Q0] 🎀
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar">
+                <div class="stat-item" id="moveStat">
+                    <div class="stat-label">Moves Made</div>
+                    <div class="stat-value" id="moveCount">0</div>
+                </div>
+                <div class="stat-item" id="comboStat">
+                    <div class="stat-label">Perfect Combo</div>
+                    <div class="stat-value" id="comboCount">0</div>
+                </div>
+            </div>
+
+            <!-- Result Banner -->
+            <div class="result-banner" id="resultBanner"></div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="btn-direction btn-north" onclick="game.move('north')">🌸 NORTH</button>
+                <button class="btn-direction btn-west" onclick="game.move('west')">🌸 WEST</button>
+                <button class="btn-direction btn-east" onclick="game.move('east')">EAST 🌸</button>
+                <button class="btn-direction btn-south" onclick="game.move('south')">🌸 SOUTH</button>
+            </div>
+
+            <!-- Reset Button -->
+            <button class="btn-reset" id="btnReset" onclick="game.reset()">✨ Play Again / Reset DFA ✨</button>
         </div>
 
-        <!-- State Display -->
-        <div class="state-display" id="stateDisplay">State: [Q0] 🎀</div>
-
-        <!-- Stats -->
-        <div class="stats-bar">
-          <div class="stat-item" id="moveStat">
-            <div class="stat-label">Moves Made</div>
-            <div class="stat-value" id="moveCount">0</div>
-          </div>
-          <div class="stat-item" id="comboStat">
-            <div class="stat-label">Perfect Combo</div>
-            <div class="stat-value" id="comboCount">0</div>
-          </div>
+        <!-- RIGHT PANEL: History -->
+        <div class="history-panel">
+            <div class="history-title">📜 DFA Transition History</div>
+            <div class="history-log" id="historyLog">
+                <div class="log-header">╔═══════════════════════════╗<br>║ DFA MACHINE INITIALIZED   ║<br>╚═══════════════════════════╝</div>
+                <div class="log-entry">Waiting for your moves...</div>
+            </div>
         </div>
-
-        <!-- Result Banner -->
-        <div class="result-banner" id="resultBanner"></div>
-
-        <!-- Controls -->
-        <div class="controls">
-          <button class="btn-direction btn-north" onclick="game.move('north')">
-            🌸 NORTH
-          </button>
-          <button class="btn-direction btn-west" onclick="game.move('west')">
-            🌸 WEST
-          </button>
-          <button class="btn-direction btn-east" onclick="game.move('east')">
-            EAST 🌸
-          </button>
-          <button class="btn-direction btn-south" onclick="game.move('south')">
-            🌸 SOUTH
-          </button>
-        </div>
-
-        <!-- Reset Button -->
-        <button class="btn-reset" id="btnReset" onclick="game.reset()">
-          ✨ Play Again / Reset DFA ✨
-        </button>
-      </div>
-
-      <!-- RIGHT PANEL: History -->
-      <div class="history-panel">
-        <div class="history-title">📜 DFA Transition History</div>
-        <div class="history-log" id="historyLog">
-          <div class="log-header">
-            ╔═══════════════════════════╗<br />║ DFA MACHINE INITIALIZED ║<br />╚═══════════════════════════╝
-          </div>
-          <div class="log-entry">Waiting for your moves...</div>
-        </div>
-      </div>
     </div>
 
     <footer class="footer">
-      💡 Navigate through the palace states. Reach the golden gate to win! |
-      Every move is recorded →
+        💡 Navigate through the palace states. Reach the golden gate to win! | Every move is recorded →
     </footer>
 
+    <button class="btn-theme" id="themeBtn" onclick="themeManager.toggle()">🌙</button>
+    <button class="btn-music" id="musicBtn" onclick="musicPlayer.toggle()">🎵</button>
+
     <script>
-      // Game State
-      const game = {
-        currentState: "q0",
-        moveCount: 0,
-        comboCount: 0,
-        moveHistory: [],
+        // Game State
+        const game = {
+            currentState: 'q0',
+            moveCount: 0,
+            comboCount: 0,
+            moveHistory: [],
 
-        roomData: {
-          q0: {
-            title: "🎀 The Dressing Room 🎀",
-            description:
-              "You wake up in a locked pastel dressing room.\nThe vanity mirror is sparkling and mysterious.\nOnly one heavy glass door leads NORTH...",
-            emoji: "🪞",
-          },
-          q1: {
-            title: "✨ The Grand Ballroom ✨",
-            description:
-              "You're surrounded by fairy lights and crystal chandeliers.\nThe enchanted atmosphere shimmers around you.\nGlowing hallway EAST, or back SOUTH...",
-            emoji: "💎",
-          },
-          q2: {
-            title: "🏰 The Royal Courtyard 🏰",
-            description:
-              "The palace guards are approaching! You can feel\nthe tension in the air. A massive golden exit\ngate stands to the NORTH—your only escape!",
-            emoji: "⚔️",
-          },
-          q_win: {
-            title: "👑 FREEDOM ACHIEVED! 👑",
-            description:
-              "Starlight hits your face as you escape!\nYou successfully navigated the palace and\nreached the winning state. Congratulations!",
-            emoji: "🌟",
-          },
-          q_lose: {
-            title: "💔 You Were Caught! 💔",
-            description:
-              "Oops! The guards caught you or you hit a\ntrap room. The state machine reached a\ndead state. Better luck next time, bestie!",
-            emoji: "🔒",
-          },
-        },
+            roomData: {
+                q0: {
+                    title: '🎀 The Dressing Room 🎀',
+                    description: 'You wake up in a locked dressing room.\nThe vanity mirror is sparkling and mysterious.\nOnly one heavy glass door leads NORTH...',
+                    emoji: '🪞'
+                },
+                q1: {
+                    title: '✨ The Grand Ballroom ✨',
+                    description: 'You\'re surrounded by fairy lights and crystal chandeliers.\nThe enchanted atmosphere shimmers around you.\nGlowing hallway EAST, or back SOUTH...',
+                    emoji: '💎'
+                },
+                q2: {
+                    title: '🏰 The Royal Courtyard 🏰',
+                    description: 'The palace guards are approaching! You can feel\nthe tension in the air. A massive golden exit\ngate stands to the NORTH—your only escape!',
+                    emoji: '⚔️'
+                },
+                q_win: {
+                    title: '👑 FREEDOM ACHIEVED! 👑',
+                    description: 'Starlight hits your face as you escape!\nYou successfully navigated the palace and\nreached the winning state. Congratulations!',
+                    emoji: '🌟'
+                },
+                q_lose: {
+                    title: '💔 You Were Caught! 💔',
+                    description: 'Oops! The guards caught you or you hit a\ntrap room. The state machine reached a\ndead state. Better luck next time!',
+                    emoji: '🔒'
+                }
+            },
 
-        transitions: {
-          q0: { north: "q1", default: "q_lose" },
-          q1: { east: "q2", south: "q0", default: "q_lose" },
-          q2: { north: "q_win", default: "q_lose" },
-        },
+            transitions: {
+                q0: { north: 'q1', default: 'q_lose' },
+                q1: { east: 'q2', south: 'q0', default: 'q_lose' },
+                q2: { north: 'q_win', default: 'q_lose' }
+            },
 
-        move(direction) {
-          if (this.currentState === "q_win" || this.currentState === "q_lose") {
-            return; // Game over, no more moves
-          }
+            move(direction) {
+                if (this.currentState === 'q_win' || this.currentState === 'q_lose') {
+                    return; // Game over, no more moves
+                }
 
-          const oldState = this.currentState;
+                const oldState = this.currentState;
+                
+                // Determine next state
+                if (this.transitions[this.currentState]) {
+                    this.currentState = this.transitions[this.currentState][direction] || 
+                                       this.transitions[this.currentState]['default'];
+                } else {
+                    this.currentState = 'q_lose';
+                }
 
-          // Determine next state
-          if (this.transitions[this.currentState]) {
-            this.currentState =
-              this.transitions[this.currentState][direction] ||
-              this.transitions[this.currentState]["default"];
-          } else {
-            this.currentState = "q_lose";
-          }
+                // Update metrics
+                this.moveCount++;
+                const isCorrectMove = oldState in this.transitions && 
+                                     direction in this.transitions[oldState] && 
+                                     this.transitions[oldState][direction] !== 'q_lose';
+                
+                if (isCorrectMove) {
+                    this.comboCount++;
+                    this.playSound('move');
+                } else {
+                    this.comboCount = 0;
+                    this.playSound('lose');
+                }
 
-          // Update metrics
-          this.moveCount++;
-          const isCorrectMove =
-            oldState in this.transitions &&
-            direction in this.transitions[oldState] &&
-            this.transitions[oldState][direction] !== "q_lose";
+                // Log the move
+                this.logMove(direction, oldState, this.currentState, isCorrectMove);
+                
+                // Update UI
+                this.updateUI();
 
-          if (isCorrectMove) {
-            this.comboCount++;
-            this.playSound("move");
-          } else {
-            this.comboCount = 0;
-            this.playSound("lose");
-          }
+                // Animate room card
+                document.getElementById('roomCard').classList.add('highlight');
+                setTimeout(() => {
+                    document.getElementById('roomCard').classList.remove('highlight');
+                }, 600);
 
-          // Log the move
-          this.logMove(direction, oldState, this.currentState, isCorrectMove);
+                // Create particles on move
+                this.createParticles();
+            },
 
-          // Update UI
-          this.updateUI();
+            logMove(direction, oldState, newState, isCorrect) {
+                const log = document.getElementById('historyLog');
+                const moveNum = this.moveHistory.length + 1;
+                
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${isCorrect ? 'correct' : 'incorrect'}`;
+                entry.textContent = `${isCorrect ? '✓' : '✗'} Move ${moveNum}: ${direction.toUpperCase()}`;
+                log.appendChild(entry);
 
-          // Animate room card
-          document.getElementById("roomCard").classList.add("highlight");
-          setTimeout(() => {
-            document.getElementById("roomCard").classList.remove("highlight");
-          }, 600);
+                const stateEntry = document.createElement('div');
+                stateEntry.className = 'log-entry';
+                stateEntry.style.opacity = '0.7';
+                stateEntry.style.fontSize = '0.9em';
+                stateEntry.textContent = `    ${oldState.toUpperCase()} → ${newState.toUpperCase()}`;
+                log.appendChild(stateEntry);
 
-          // Create particles on move
-          this.createParticles();
-        },
+                if (isCorrect && this.comboCount > 1) {
+                    const comboEntry = document.createElement('div');
+                    comboEntry.className = 'log-entry combo';
+                    comboEntry.textContent = `    🔥 Combo x${this.comboCount}!`;
+                    log.appendChild(comboEntry);
+                }
 
-        logMove(direction, oldState, newState, isCorrect) {
-          const log = document.getElementById("historyLog");
-          const moveNum = this.moveHistory.length + 1;
+                log.scrollTop = log.scrollHeight;
+                this.moveHistory.push({ direction, oldState, newState, isCorrect });
+            },
 
-          const entry = document.createElement("div");
-          entry.className = `log-entry ${isCorrect ? "correct" : "incorrect"}`;
-          entry.textContent = `${isCorrect ? "✓" : "✗"} Move ${moveNum}: ${direction.toUpperCase()}`;
-          log.appendChild(entry);
+            updateUI() {
+                const room = this.roomData[this.currentState];
+                
+                document.getElementById('roomTitle').textContent = room.title;
+                document.getElementById('roomDescription').textContent = room.description;
+                document.getElementById('roomEmoji').textContent = room.emoji;
+                document.getElementById('stateDisplay').textContent = `State: [${this.currentState.toUpperCase()}] ${room.emoji}`;
+                
+                document.getElementById('moveCount').textContent = this.moveCount;
+                document.getElementById('comboCount').textContent = this.comboCount;
 
-          const stateEntry = document.createElement("div");
-          stateEntry.className = "log-entry";
-          stateEntry.style.opacity = "0.7";
-          stateEntry.style.fontSize = "0.9em";
-          stateEntry.textContent = `    ${oldState.toUpperCase()} → ${newState.toUpperCase()}`;
-          log.appendChild(stateEntry);
+                // Update combo stat highlight
+                const comboStat = document.getElementById('comboStat');
+                if (this.comboCount > 0) {
+                    comboStat.classList.add('combo-active');
+                } else {
+                    comboStat.classList.remove('combo-active');
+                }
 
-          if (isCorrect && this.comboCount > 1) {
-            const comboEntry = document.createElement("div");
-            comboEntry.className = "log-entry combo";
-            comboEntry.textContent = `    🔥 Combo x${this.comboCount}!`;
-            log.appendChild(comboEntry);
-          }
+                // Check for end state
+                if (this.currentState === 'q_win' || this.currentState === 'q_lose') {
+                    this.endGame();
+                }
+            },
 
-          log.scrollTop = log.scrollHeight;
-          this.moveHistory.push({ direction, oldState, newState, isCorrect });
-        },
+            endGame() {
+                // Disable buttons
+                document.querySelectorAll('.btn-direction').forEach(btn => btn.disabled = true);
+                
+                // Show reset button
+                document.getElementById('btnReset').classList.add('show');
 
-        updateUI() {
-          const room = this.roomData[this.currentState];
+                // Show result banner
+                const banner = document.getElementById('resultBanner');
+                banner.classList.add('show');
 
-          document.getElementById("roomTitle").textContent = room.title;
-          document.getElementById("roomDescription").textContent =
-            room.description;
-          document.getElementById("roomEmoji").textContent = room.emoji;
-          document.getElementById("stateDisplay").textContent =
-            `State: [${this.currentState.toUpperCase()}] ${room.emoji}`;
+                const historyLog = document.getElementById('historyLog');
+                
+                if (this.currentState === 'q_win') {
+                    document.getElementById('roomCard').style.background = 'linear-gradient(135deg, #C1E1C1, #E8F5E9)';
+                    banner.classList.add('win');
+                    banner.textContent = '🎉 INPUT ACCEPTED! YOU WIN! 🎉';
+                    
+                    const winEntry = document.createElement('div');
+                    winEntry.className = 'log-entry correct';
+                    winEntry.innerHTML = '<strong>✅ STATUS: String Accepted!</strong>';
+                    historyLog.appendChild(winEntry);
 
-          document.getElementById("moveCount").textContent = this.moveCount;
-          document.getElementById("comboCount").textContent = this.comboCount;
+                    this.playSound('win');
+                } else {
+                    document.getElementById('roomCard').style.background = 'linear-gradient(135deg, #FFB7B2, #FFCDD2)';
+                    banner.classList.add('lose');
+                    banner.textContent = '❌ INPUT REJECTED! GAME OVER! ❌';
+                    
+                    const loseEntry = document.createElement('div');
+                    loseEntry.className = 'log-entry incorrect';
+                    loseEntry.innerHTML = '<strong>❌ STATUS: String Rejected!</strong>';
+                    historyLog.appendChild(loseEntry);
 
-          // Update combo stat highlight
-          const comboStat = document.getElementById("comboStat");
-          if (this.comboCount > 0) {
-            comboStat.classList.add("combo-active");
-          } else {
-            comboStat.classList.remove("combo-active");
-          }
+                    this.playSound('lose');
+                }
 
-          // Check for end state
-          if (this.currentState === "q_win" || this.currentState === "q_lose") {
-            this.endGame();
-          }
-        },
+                // Add final stats
+                const statsEntry = document.createElement('div');
+                statsEntry.className = 'log-entry';
+                statsEntry.style.marginTop = '10px';
+                statsEntry.style.borderTop = '1px solid var(--purple)';
+                statsEntry.style.paddingTop = '10px';
+                statsEntry.innerHTML = `<strong>Final Stats:</strong><br>Path Length: ${this.moveCount} moves<br>Best Combo: ${this.comboCount}`;
+                historyLog.appendChild(statsEntry);
+                
+                historyLog.scrollTop = historyLog.scrollHeight;
+            },
 
-        endGame() {
-          // Disable buttons
-          document
-            .querySelectorAll(".btn-direction")
-            .forEach((btn) => (btn.disabled = true));
+            reset() {
+                this.currentState = 'q0';
+                this.moveCount = 0;
+                this.comboCount = 0;
+                this.moveHistory = [];
 
-          // Show reset button
-          document.getElementById("btnReset").classList.add("show");
+                // Reset UI
+                document.querySelectorAll('.btn-direction').forEach(btn => btn.disabled = false);
+                document.getElementById('btnReset').classList.remove('show');
+                document.getElementById('resultBanner').classList.remove('show', 'win', 'lose');
+                document.getElementById('roomCard').style.background = 'white';
 
-          // Show result banner
-          const banner = document.getElementById("resultBanner");
-          banner.classList.add("show");
+                // Clear history
+                const historyLog = document.getElementById('historyLog');
+                historyLog.innerHTML = '';
+                const header = document.createElement('div');
+                header.className = 'log-header';
+                header.innerHTML = '╔═══════════════════════════╗<br>║ DFA MACHINE RESET         ║<br>╚═══════════════════════════╝';
+                historyLog.appendChild(header);
+                
+                const waitEntry = document.createElement('div');
+                waitEntry.className = 'log-entry';
+                waitEntry.textContent = 'Ready for a new game!';
+                historyLog.appendChild(waitEntry);
 
-          const historyLog = document.getElementById("historyLog");
+                this.updateUI();
+                this.playSound('move');
+            },
 
-          if (this.currentState === "q_win") {
-            document.getElementById("roomCard").style.background =
-              "linear-gradient(135deg, #C1E1C1, #E8F5E9)";
-            banner.classList.add("win");
-            banner.textContent = "🎉 INPUT ACCEPTED! YOU WIN! 🎉";
+            playSound(type) {
+                // Create a simple audio context for beep sounds
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    
+                    oscillator.connect(gain);
+                    gain.connect(audioContext.destination);
 
-            const winEntry = document.createElement("div");
-            winEntry.className = "log-entry correct";
-            winEntry.innerHTML = "<strong>✅ STATUS: String Accepted!</strong>";
-            historyLog.appendChild(winEntry);
+                    let frequency = 800;
+                    let duration = 0.1;
 
-            this.playSound("win");
-          } else {
-            document.getElementById("roomCard").style.background =
-              "linear-gradient(135deg, #FFB7B2, #FFCDD2)";
-            banner.classList.add("lose");
-            banner.textContent = "❌ INPUT REJECTED! GAME OVER! ❌";
+                    if (type === 'move') {
+                        frequency = 800;
+                        duration = 0.1;
+                    } else if (type === 'win') {
+                        frequency = 1200;
+                        duration = 0.5;
+                    } else if (type === 'lose') {
+                        frequency = 400;
+                        duration = 0.3;
+                    }
 
-            const loseEntry = document.createElement("div");
-            loseEntry.className = "log-entry incorrect";
-            loseEntry.innerHTML =
-              "<strong>❌ STATUS: String Rejected!</strong>";
-            historyLog.appendChild(loseEntry);
+                    oscillator.frequency.value = frequency;
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + duration);
+                } catch (e) {
+                    // Audio not available, silently fail
+                }
+            },
 
-            this.playSound("lose");
-          }
-
-          // Add final stats
-          const statsEntry = document.createElement("div");
-          statsEntry.className = "log-entry";
-          statsEntry.style.marginTop = "10px";
-          statsEntry.style.borderTop = "1px solid var(--purple)";
-          statsEntry.style.paddingTop = "10px";
-          statsEntry.innerHTML = `<strong>Final Stats:</strong><br>Path Length: ${this.moveCount} moves<br>Best Combo: ${this.comboCount}`;
-          historyLog.appendChild(statsEntry);
-
-          historyLog.scrollTop = historyLog.scrollHeight;
-        },
-
-        reset() {
-          this.currentState = "q0";
-          this.moveCount = 0;
-          this.comboCount = 0;
-          this.moveHistory = [];
-
-          // Reset UI
-          document
-            .querySelectorAll(".btn-direction")
-            .forEach((btn) => (btn.disabled = false));
-          document.getElementById("btnReset").classList.remove("show");
-          document
-            .getElementById("resultBanner")
-            .classList.remove("show", "win", "lose");
-          document.getElementById("roomCard").style.background = "white";
-
-          // Clear history
-          const historyLog = document.getElementById("historyLog");
-          historyLog.innerHTML = "";
-          const header = document.createElement("div");
-          header.className = "log-header";
-          header.innerHTML =
-            "╔═══════════════════════════╗<br>║ DFA MACHINE RESET         ║<br>╚═══════════════════════════╝";
-          historyLog.appendChild(header);
-
-          const waitEntry = document.createElement("div");
-          waitEntry.className = "log-entry";
-          waitEntry.textContent = "Ready for a new game!";
-          historyLog.appendChild(waitEntry);
-
-          this.updateUI();
-          this.playSound("move");
-        },
-
-        playSound(type) {
-          // Create a simple audio context for beep sounds
-          try {
-            const audioContext = new (
-              window.AudioContext || window.webkitAudioContext
-            )();
-            const oscillator = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-
-            oscillator.connect(gain);
-            gain.connect(audioContext.destination);
-
-            let frequency = 800;
-            let duration = 0.1;
-
-            if (type === "move") {
-              frequency = 800;
-              duration = 0.1;
-            } else if (type === "win") {
-              frequency = 1200;
-              duration = 0.5;
-            } else if (type === "lose") {
-              frequency = 400;
-              duration = 0.3;
+            createParticles() {
+                const container = document.getElementById('particles');
+                const colors = ['#FF69B4', '#D8BFD8', '#FFE4E1', '#FFD700'];
+                
+                for (let i = 0; i < 8; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.innerHTML = ['✨', '💫', '🌸', '💕'][Math.floor(Math.random() * 4)];
+                    particle.style.fontSize = Math.random() * 20 + 15 + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.opacity = 0.8;
+                    
+                    container.appendChild(particle);
+                    
+                    const duration = Math.random() * 1000 + 1000;
+                    const startX = parseFloat(particle.style.left);
+                    const startY = parseFloat(particle.style.top);
+                    
+                    let elapsed = 0;
+                    const animate = () => {
+                        elapsed += 16;
+                        const progress = elapsed / duration;
+                        
+                        particle.style.left = (startX + (Math.random() - 0.5) * 100 * progress) + '%';
+                        particle.style.top = (startY - progress * 100) + '%';
+                        particle.style.opacity = 1 - progress;
+                        
+                        if (progress < 1) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            particle.remove();
+                        }
+                    };
+                    
+                    requestAnimationFrame(animate);
+                }
             }
+        };
 
-            oscillator.frequency.value = frequency;
-            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(
-              0.01,
-              audioContext.currentTime + duration,
-            );
+        // Initialize game
+        game.updateUI();
 
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-          } catch (e) {
-            // Audio not available, silently fail
-          }
-        },
+        // Theme Manager
+        const themeManager = {
+            isDarkMode: false,
 
-        createParticles() {
-          const container = document.getElementById("particles");
-          const colors = ["#FF69B4", "#D8BFD8", "#FFE4E1", "#FFD700"];
+            init() {
+                // Check if user prefers dark mode
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    this.setDarkMode(true);
+                }
+            },
 
-          for (let i = 0; i < 8; i++) {
-            const particle = document.createElement("div");
-            particle.className = "particle";
-            particle.innerHTML = ["✨", "💫", "🌸", "💕"][
-              Math.floor(Math.random() * 4)
-            ];
-            particle.style.fontSize = Math.random() * 20 + 15 + "px";
-            particle.style.left = Math.random() * 100 + "%";
-            particle.style.top = Math.random() * 100 + "%";
-            particle.style.opacity = 0.8;
+            setDarkMode(isDark) {
+                this.isDarkMode = isDark;
+                const body = document.body;
+                
+                if (isDark) {
+                    body.classList.add('dark-theme');
+                    document.getElementById('themeBtn').textContent = '☀️';
+                } else {
+                    body.classList.remove('dark-theme');
+                    document.getElementById('themeBtn').textContent = '🌙';
+                }
+            },
 
-            container.appendChild(particle);
+            toggle() {
+                this.setDarkMode(!this.isDarkMode);
+            }
+        };
 
-            const duration = Math.random() * 1000 + 1000;
-            const startX = parseFloat(particle.style.left);
-            const startY = parseFloat(particle.style.top);
+        // Initialize theme
+        themeManager.init();
 
-            let elapsed = 0;
-            const animate = () => {
-              elapsed += 16;
-              const progress = elapsed / duration;
+        // Music Player
+        const musicPlayer = {
+            audioContext: null,
+            isPlaying: false,
+            isMuted: false,
 
-              particle.style.left =
-                startX + (Math.random() - 0.5) * 100 * progress + "%";
-              particle.style.top = startY - progress * 100 + "%";
-              particle.style.opacity = 1 - progress;
+            init() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.log('Web Audio API not supported');
+                }
+            },
 
-              if (progress < 1) {
-                requestAnimationFrame(animate);
-              } else {
-                particle.remove();
-              }
-            };
+            getFrequency(note) {
+                const notes = {
+                    'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'G4': 392.00,
+                    'A4': 440.00, 'B4': 493.88, 'C5': 523.25, 'D5': 587.33, 'E5': 659.25,
+                    'F5': 698.46, 'G5': 783.99, 'A5': 880.00, 'B5': 987.77, 'C6': 1046.50
+                };
+                return notes[note] || 440;
+            },
 
-            requestAnimationFrame(animate);
-          }
-        },
-      };
+            playNote(frequency, duration, volume = 0.15) {
+                if (!this.audioContext || this.isMuted) return;
 
-      // Initialize game
-      game.updateUI();
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
+
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
+
+                osc.frequency.value = frequency;
+                osc.type = 'sine';
+
+                gain.gain.setValueAtTime(volume, this.audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+
+                osc.start(this.audioContext.currentTime);
+                osc.stop(this.audioContext.currentTime + duration);
+            },
+
+            playMelody() {
+                if (!this.audioContext || this.isMuted) return;
+
+                // Disney-inspired magical melody
+                const melody = [
+                    { note: 'E5', duration: 0.3 },
+                    { note: 'D5', duration: 0.3 },
+                    { note: 'C5', duration: 0.3 },
+                    { note: 'D5', duration: 0.3 },
+                    { note: 'E5', duration: 0.3 },
+                    { note: 'E5', duration: 0.3 },
+                    { note: 'E5', duration: 0.6 },
+                    { note: 'D5', duration: 0.3 },
+                    { note: 'D5', duration: 0.3 },
+                    { note: 'D5', duration: 0.6 },
+                    { note: 'E5', duration: 0.3 },
+                    { note: 'G5', duration: 0.3 },
+                    { note: 'G5', duration: 0.6 },
+                ];
+
+                let time = this.audioContext.currentTime;
+
+                melody.forEach(({ note, duration }) => {
+                    const frequency = this.getFrequency(note);
+                    setTimeout(() => {
+                        this.playNote(frequency, duration, 0.1);
+                    }, (time - this.audioContext.currentTime) * 1000);
+                    time += duration;
+                });
+
+                // Loop the melody
+                const totalDuration = melody.reduce((sum, n) => sum + n.duration, 0);
+                setTimeout(() => {
+                    if (this.isPlaying && !this.isMuted) {
+                        this.playMelody();
+                    }
+                }, totalDuration * 1000);
+            },
+
+            start() {
+                if (!this.audioContext) {
+                    this.init();
+                }
+                this.isPlaying = true;
+                this.isMuted = false;
+                document.getElementById('musicBtn').classList.remove('muted');
+                document.getElementById('musicBtn').textContent = '🎵';
+                this.playMelody();
+            },
+
+            stop() {
+                this.isPlaying = false;
+            },
+
+            toggle() {
+                if (this.isMuted) {
+                    this.isMuted = false;
+                    document.getElementById('musicBtn').classList.remove('muted');
+                    document.getElementById('musicBtn').textContent = '🎵';
+                    if (this.isPlaying) {
+                        this.playMelody();
+                    }
+                } else {
+                    this.isMuted = true;
+                    document.getElementById('musicBtn').classList.add('muted');
+                    document.getElementById('musicBtn').textContent = '🔇';
+                }
+            }
+        };
+
+        // Auto-start music
+        musicPlayer.init();
+        musicPlayer.start();
     </script>
-  </body>
+</body>
 </html>
